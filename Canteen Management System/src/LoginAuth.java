@@ -56,7 +56,7 @@ public class LoginAuth {
 			
 		
 		
-        
+        scan.close();
         
         
 	}

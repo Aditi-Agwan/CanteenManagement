@@ -21,9 +21,9 @@ public static String userCreation(String username, String password) {
 			int Ascii = (int)password.charAt(i);
 			if(Ascii>=65 && Ascii<=90)
 				contain_uppercase =1;
-			if(Ascci>=48 && Ascii<=57)
+			if(Ascii>=48 && Ascii<=57)
 				contain_digit =1;
-			if((Ascii>=32 && Ascii<=47) || (Ascii>=58 && Ascii<=64) || (Ascii>=91 && Ascii<=96) || (Ascii>=123 &&Ascii<=126>))
+			if((Ascii>=32 && Ascii<=47) || (Ascii>=58 && Ascii<=64) || (Ascii>=91 && Ascii<=96) || (Ascii>=123 &&Ascii<=126))
 				contain_specialCharacter =1;
 			
 			int count =1;
@@ -66,9 +66,10 @@ public static String userCreation(String username, String password) {
 	return userOutput;
 }
 private static String passwordEncryptor(String password) {
-	// TODO Auto-generated method stub
+	
 	int max_repition=0;
 	int max_ASCII_value =0;
+	//Calculate max ascii value
 	for(int i=0;i<password.length();i++) {
 		int no_of_repetition =1;
 		for(int j=i+1;j<password.length();j++) {
@@ -87,16 +88,59 @@ private static String passwordEncryptor(String password) {
 		
 			
 	}
+	//update checksum 
 	int checksum = max_ASCII_value - 48;
-	char password_array[] = password.toCharArray(); 
+	
+	//store new encrypted password
+	String new_password = "";
 	for(int i=0;i<password.length();i++) {
+		int Ascii =(int)password.charAt(i);
+		int update_value=0;
+		if((Ascii>=32 && Ascii<=47) || (Ascii>=58 && Ascii<=64) || (Ascii>=91 && Ascii<=96) || (Ascii>=123 &&Ascii<=126))
+			new_password+=password.charAt(i);
+		else if(Ascii>=65 && Ascii<=90) {
+			int dup = checksum;
+			 
+            if (Ascii+dup > 90) {
+               dup -= (90 - Ascii);
+               dup = dup % 26;
+                 
+               new_password += (char)(64 + dup);
+            } else {
+                new_password += (char)(Ascii + dup);
+            }
+         
+		}
+		else if(Ascii>=97 && Ascii<=122) {
+			int dup = checksum;
+			 
+            if (Ascii+dup > 122) {
+               dup -= (122 - Ascii);
+               dup = dup % 26;
+                 
+               new_password += (char)(96 + dup);
+            } else {
+                new_password += (char)(Ascii + dup);
+            }
+         
+		}
+		else if(Ascii>=48 && Ascii<=57) {
+			int dup = checksum;
+			 
+            if (Ascii+dup > 57) {
+               dup -= (57 - Ascii);
+               dup = dup % 10;
+                 
+               new_password += (char)(47 + dup);
+            } else {
+                new_password += (char)(Ascii + dup);
+            }
+         
+		}
 		
-		int update_char = password.charAt(i) + (char)checksum;
-		password_array[i] = (char)update_char;
-		System.out.print(password_array[i]);
 	}
 	
-	return password_array.toString();
+	return new_password;
 }
 
 }

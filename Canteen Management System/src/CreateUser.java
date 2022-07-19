@@ -2,7 +2,7 @@ import java.util.*;
 public class CreateUser {
 	static List<String> user_username = new ArrayList<String>();
 	static List<String> user_password = new ArrayList<String>();
-    static Map<String,String> user_account = new HashMap<>();
+	static Map<String, ArrayList<String>> user_account = new HashMap<String, ArrayList<String>>();
     public static void UserValidation(String username,String password) {
     	
     }
@@ -46,9 +46,9 @@ public static String userCreation(String username, String password) {
 			password = passwordEncryptor(password);
 			user_username.add(username);
 			user_password.add(password);
-			user_account.put(username,password);
-			System.out.println(password);
-			userOutput+="User Account created";
+			user_account.put(username, new ArrayList<String>());
+			user_account.get(username).add(password);
+			
 		}
 		else {
 			if(contain_digit ==0)
@@ -142,5 +142,11 @@ private static String passwordEncryptor(String password) {
 	
 	return new_password;
 }
+public static void showUsers() {
+	for(String key : user_account.keySet())
+		System.out.println(key + " : " + user_account.get(key) );
+	CreateAdmin.adminTasks();
+}
+
 
 }
